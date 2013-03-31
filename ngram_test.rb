@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+require './ngram'
+
+include Language
+
+def pick_random(d, q=10); all_files = Dir[d]; picked_files = []; q.times do
+	picked_files << all_files[rand(all_files.size)]; end
+return picked_files; end
+
+documents = ""
+
+pick_random("#{ARGV[0]}/*.txt", ARGV[1].to_i).each do |f|
+	documents += File.read(f).force_encoding('iso-8859-1').encode('utf-8')
+end
+
+pp NGram::frequency( 3, documents )
