@@ -1,0 +1,2 @@
+estos archivos tienen una sintaxis ruby-like, cada linea se toma como elemento de un hash (key/value).
+se asume que el nombre del archivo es tambien el nombre del idioma (se carga como un simbolo).

@@ -5,7 +5,7 @@ require './language'
 
 include Language
 
-example = "chupe al instante capto mi maldad @emmxnuelsegovia jajaja despues ya no me callaba yo"
+example = "texto de prueba"
 
 puts "#{example}:"
 text = Text.new(example)
