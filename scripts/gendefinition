@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+source = ARGV[0]
+
+if !File.exists?(source)
+	exit()
+end
+
+require_relative '../language'
+require 'pp'
+require 'oj'
+require 'json'
+
+include Language
+
+lang = ARGV[0].split('/')[1]
+
+texts = Oj.load( File.read( ARGV[0] ) ).values.join(' ')
+
+ngrams = NGram::frequency( 3, texts )
+ngrams.to_json
+
+#open("TMP.json", "w") do |f|
+#	f.print("lol")
+#	f.print(  Oj.dump( NGram::frequency( 3, texts ) ) )
+#end
+
+#open("#{lang}_wikipedia_ngrams.json", "w") do |f|
+#	f.print( Oj.dump( NGram::frequency( 3, texts ) ) )
+#end

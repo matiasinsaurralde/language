@@ -5,6 +5,31 @@ require 'pp'
 
 module Language
 	module NGram
+
+		def self.abecedary_frequency(d)
+
+			unigrams, _unigrams, total = {}, {}, 0
+
+			abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' ]
+
+			abc.each do |l|
+				unigrams.store( l, 0 )
+			end
+
+			splits = d.downcase.split(//)
+
+			splits.each do |q|
+				if abc.include?(q)
+					unigrams[q] += 1
+				end
+				total += 1
+			end
+
+			unigrams.each {|k,v| _unigrams.store(k,  ( v.to_f / total.to_f * 100.0 ).round(2)  ) }
+			return _unigrams
+
+		end
+
 		def self.frequency(nn, d)
 			results = {}
 			nn += 1; nn.times.to_a[1, nn].each do |n|
