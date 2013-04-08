@@ -1,12 +1,13 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
+require 'oj'
 require 'pp'
 
 module Language
 	module NGram
 
-		def self.abecedary_frequency(d)
+		def self.abecedary_frequency(d, percentages = true)
 
 			unigrams, _unigrams, total = {}, {}, 0
 
@@ -25,17 +26,20 @@ module Language
 				total += 1
 			end
 
-			unigrams.each {|k,v| _unigrams.store(k,  ( v.to_f / total.to_f * 100.0 ).round(2)  ) }
+			#unigrams.each {|k,v| _unigrams.store(k,  ( v.to_f / total.to_f * 100.0 ).round(2)  ) }
+			unigrams.each {|k,v| _unigrams.store(k,  (percentages == true ? ( v.to_f / total.to_f * 100.0 ).round(2) : v )  ) }
+
 			return _unigrams
 
 		end
 
-		def self.frequency(nn, d)
+		def self.frequency(nn, d, percentages = true)
 			results = {}
+			splits = d.downcase.split(//)
 			nn += 1; nn.times.to_a[1, nn].each do |n|
 				results.store(n, {})
 				total = 0
-				splits = d.downcase.split(//)
+				# splits = d.downcase.split(//)
 				i = 0; splits.each do |q|
 
 					if n > 1
@@ -74,14 +78,73 @@ module Language
 				_o = results[n].sort_by {|k,v| v}.reverse
 				results[n] = {}
 				_o.each do |a|
-					percentage =(  a[1].to_f / total.to_f * 100.0 ).round(2)
-					if percentage > 0.1
-						results[n].store(a[0], percentage )
+					if percentages
+						percentage = (  a[1].to_f / total.to_f * 100.0 ).round(2)
+						if percentage > 0.1
+							results[n].store(a[0], percentage )
+						end
+					else
+						results[n].store(a[0], a[1])
 					end
 				end
 
 			end
+
+			if !percentages; results.store( :character_count, splits.size ); end
+
 			return results
+		end
+
+		def self.ngrams_please( input_file, depth, output_dir )
+
+			if !Dir.exists?(output_dir)
+				Dir.mkdir(output_dir)
+			end
+
+			raw_json = File.read( input_file ).force_encoding('iso-8859-1').encode('utf-8').downcase
+
+			texts, results = Oj.load( raw_json ), {}
+
+			puts "loading #{input_file} ( #{texts.size} texts), depth: #{depth.to_s}"
+
+			results = { :character_count => 0, :ngrams => {} }
+
+			c = 0; texts.values.each do |s|
+
+				just_text = s.join(' ')
+
+				puts " --- #{c}/#{texts.size}"
+
+				if depth == :abc
+
+					results[ :character_count] += just_text.size
+
+					results[ :ngrams ].store( c, NGram::abecedary_frequency( just_text, false ) )
+
+					# pp results
+
+				else
+
+					output = NGram::frequency( depth, just_text, false )
+
+					results[ :character_count ] += output[ :character_count ]
+
+					results[ :ngrams ].store( c, output )
+
+					# pp results
+
+				end
+
+
+				if depth == :abc
+					open(File.join(output_dir, 'abc.json'), 'w') do |f|; f.print( Oj.dump(results) ); end
+				else
+					open(File.join(output_dir, 'bigrams_trigrams.json'), 'w') do |f|; f.print( Oj.dump(results) ); end
+				end
+
+				c += 1
+			end
+
 		end
 	end
 end

@@ -5,13 +5,10 @@ require './language'
 
 include Language
 
-example = "texto de prueba"
+t = gets.chomp.to_s
 
-puts "#{example}:"
-text = Text.new(example)
+example = Text.new ( t )
 
-pp text.language_detection()
+puts "language_detection(): #{example.language_detection().inspect}"
 
-puts
-
-pp text.splitted_language_detection()
+#puts "language_detection(split): #{example.splitted_language_detection().inspect}"

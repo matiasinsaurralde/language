@@ -79,15 +79,15 @@ module Language
 
 		def initialize(body)
 
+			[',', '.', '-', '_', '?', ';', ':', '!'].each do |s|
+				body.gsub!(s, '')
+			end
+
 			@body, @ngrams, @magnitudes = body, NGram::frequency( 3, body ), {}
 
 			@ngrams.each do |n, terms|
 				@magnitudes.store( n, Maths::magnitude(terms) )
 			end
-
-			#@magnitude = Maths::magnitude(@letter_freq)
-
-			# pp @ngrams
 
 		end
 
@@ -97,18 +97,21 @@ module Language
 
 			splits.each do |split|
 
-				Text.new(split).language_detection().each do |language, percentage|
+				if split.size > 2
 
-					if results[language]
-
-						results[language] << percentage
-
-					else
-
-						results.store(language, [ percentage ])
-
+					Text.new(split).language_detection().each do |language, percentage|
+	
+						if results[language]
+	
+							results[language] << percentage
+	
+						else
+	
+							results.store(language, [ percentage ])
+	
+						end
+	
 					end
-
 				end
 
 			end
@@ -207,7 +210,7 @@ module Language
 		end
 
 		def self.similarity(dotp, magnitude_p)
-			n = ( dotp / magnitude_p ) * 100.0
+			n = (dotp.to_f / magnitude_p.to_f)*100.0
 			return n.round(2)
 		end
 
