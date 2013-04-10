@@ -1,7 +1,12 @@
 ﻿
 # Language
 
-simple language detection
+The basic idea of this library is to detect languages by computing cosine similarity (unigrams, bigrams, etc.) between models and given texts.
+This is a very popular approach based on Salton & McGill model. Also you may look at "Foundations of statistical natural language processing" by Schutze.
+
+## Models
+
+This library ships with models for some common languages (currently english, spanish, italian, french and guarani). These models were generated from 200 books and 2000 Wikipedia articles (for each language). You may generate your own models with the scripts (...look at the 'scripts' folder).
 
 ## IRB example
 
