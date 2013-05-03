@@ -2,18 +2,9 @@
 
 require 'pp'
 
-class Hash
-	def percentages!(total, round = 1)
-		self.each {|k,v| self[k] = (v.to_f / total.to_f * 100.0).round( round ) }
-	end
-	def most_frequent
-		_h = {}
-		self.sort_by {|k,v| v }.reverse.each do |k,v|
-			_h.store(k,v)
-		end
-		return _h
-	end
-end
+class Hash; def percentages!(total, round = 1); self.each {|k,v| self[k] = (v.to_f / total.to_f * 100.0).round( round ) }; end; def most_frequent; return self.sort_by {|k,v| v }.reverse.to_h; end; def less_frequent; return self.sort_by{|k,v| v}.to_h; end; end
+
+class Array; def to_h; _ = {}; self.each do |n|; _.store( n[0], n[1] ); end; return _; end; end
 
 class Text
 
@@ -79,13 +70,13 @@ class Context
 
 		@global_terms.each do |term, presence|
 			if presence == @texts.size
-				@global_terms.delete( term )
+				@global_terms.percentages!( @texts.size )
 			end
 		end
 	end
 
 	def global_frequency()
-		return @global_terms
+		return @global_terms.less_frequent()
 	end
 
 	def texts()
