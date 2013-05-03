@@ -37,8 +37,19 @@ class Text
 	end
 
 	def terms
-		return @terms
+		@terms
 	end
 
 end
 
+class Context
+	def initialize()
+		@texts = []
+	end
+	def <<(t)
+		@texts << t
+	end
+	def texts
+		@texts
+	end
+end
