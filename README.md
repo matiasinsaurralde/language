@@ -24,9 +24,9 @@ irb(main):006:0> another_example.language_detection().first
 
 ## Demo
 
-(built with [sinatra] (http://www.sinatrarb.com/), [jquery] (http://jquery.com/) and [text-effects] (http://www.jsplugins.com/Scripts/Plugins/View/Jquery-Text-Effects/))
-
 http://rlanguages.herokuapp.com/
+
+(built with [sinatra] (http://www.sinatrarb.com/), [jquery] (http://jquery.com/) and [text-effects] (http://www.jsplugins.com/Scripts/Plugins/View/Jquery-Text-Effects/))
 
 ## TODO
 
