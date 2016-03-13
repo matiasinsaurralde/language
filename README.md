@@ -33,3 +33,7 @@ http://rlanguages.herokuapp.com/
 * Benchmarks (with different n-gram depths).
 * Support for more languages.
 * Multilingual processing (for spanglish, portuñol and jopará texts).
+
+## License
+
+[MIT](https://github.com/matiasinsaurralde/language/blob/master/LICENSE)
